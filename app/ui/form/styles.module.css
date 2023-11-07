@@ -1,0 +1,15 @@
+.form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.inputWithLabel {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
