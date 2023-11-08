@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import { deleteContact } from '@/app/lib/actions';
 import { Contact } from '@/app/lib/definitions';
 import Button from '@/app/ui/components/button';
 import styles from './styles.module.css';
 
 export default function ContactListItem({ contact }: { contact: Contact }) {
+  const deleteContactWithId = deleteContact.bind(null, contact.id);
+
   return (
     <li>
       <div className={styles.listItem}>
@@ -14,7 +17,9 @@ export default function ContactListItem({ contact }: { contact: Contact }) {
           <Link href={`/${contact.id}/edit`}>
             <Button>Edit</Button>
           </Link>
-          <Button>Delete</Button>
+          <form action={deleteContactWithId}>
+            <Button>Delete</Button>
+          </form>
         </div>
       </div>
     </li>

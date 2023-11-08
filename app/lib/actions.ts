@@ -52,3 +52,9 @@ export async function updateContact(id: string, formData: FormData) {
   revalidatePath('/');
   redirect('/');
 }
+
+export async function deleteContact(id: string) {
+  await sql`DELETE FROM contacts WHERE id = ${id}`;
+
+  revalidatePath('/');
+}
