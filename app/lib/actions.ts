@@ -21,6 +21,7 @@ export type State = {
     description?: string[];
   };
   message?: string | null;
+  success?: boolean;
 };
 
 const AddContact = FormSchema.omit({ id: true });
@@ -52,7 +53,7 @@ export async function addContact(prevState: State, formData: FormData) {
   }
 
   revalidatePath('/');
-  redirect('/');
+  return { success: true, message: 'New contact added.' };
 }
 
 const UpdateContact = FormSchema.omit({ id: true });
@@ -94,14 +95,14 @@ export async function updateContact(
   }
 
   revalidatePath('/');
-  redirect('/');
+  return { success: true, message: 'Successfully updated contact.' };
 }
 
 export async function deleteContact(id: string) {
   try {
     await sql`DELETE FROM contacts WHERE id = ${id}`;
     revalidatePath('/');
-    return { message: 'Deleted contact.' };
+    return { success: true, message: 'Deleted contact.' };
   } catch (error) {
     return {
       message: 'Database Error: Failed to delete contact.',

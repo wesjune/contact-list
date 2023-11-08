@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
+import { useToast } from '@/app/hooks/useToast';
 import { State } from '@/app/lib/actions';
 import { Contact } from '@/app/lib/definitions';
 import Button from '@/app/ui/components/button';
@@ -18,11 +20,19 @@ export default function Form({
   contact?: Contact;
 }) {
   const router = useRouter();
-  const initialState = { message: null, errors: {} };
+  const initialState = { message: '', errors: {} };
   const [state, dispatch]: [state: State, dispatch: () => void] = useFormState(
     action,
     initialState
   );
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (state.success && state.message) {
+      toast({ message: state.message });
+      redirect('/');
+    }
+  }, [state.message, state.success, toast]);
 
   return (
     <form action={dispatch} className={styles.form}>

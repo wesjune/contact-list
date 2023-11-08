@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { ToastProvider } from '@/app/contexts/toast-context';
+import Toast from '@/app/ui/components/toast';
 import Header from '@/app/ui/header';
 import './globals.css';
 
@@ -17,8 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        {children}
+        <ToastProvider>
+          <Header />
+          {children}
+          <Toast />
+        </ToastProvider>
       </body>
     </html>
   );
