@@ -29,3 +29,26 @@ export async function addContact(formData: FormData) {
   revalidatePath('/');
   redirect('/');
 }
+
+const UpdateContact = ContactSchema.omit({ id: true });
+
+export async function updateContact(id: string, formData: FormData) {
+  const { first_name, last_name, job, description } = UpdateContact.parse({
+    first_name: formData.get('first_name'),
+    last_name: formData.get('last_name'),
+    job: formData.get('job'),
+    description: formData.get('description'),
+  });
+
+  await sql`
+    UPDATE contacts
+    SET first_name = ${first_name}, 
+        last_name = ${last_name}, 
+        job = ${job}, 
+        description = ${description}
+    WHERE id = ${id}
+  `;
+
+  revalidatePath('/');
+  redirect('/');
+}
