@@ -16,3 +16,13 @@
   gap: 0.5rem;
   margin-top: 1.5rem;
 }
+
+.deleteButton {
+  color: rgb(248, 81, 73) !important;
+  border: none !important;
+}
+
+.deleteButton:hover {
+  color: rgb(218, 47, 53) !important;
+  background: rgb(255, 240, 240) !important;
+}

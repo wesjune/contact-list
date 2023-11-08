@@ -14,7 +14,43 @@
   gap: 1rem;
 }
 
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  height: 2rem;
+  color: #333;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.cancelButton:hover {
+  background: #eee;
+}
+
 .errorMessage {
   color: rgb(200 20 20);
   font-size: 0.75rem;
+}
+
+.loader {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

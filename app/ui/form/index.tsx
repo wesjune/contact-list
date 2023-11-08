@@ -2,7 +2,8 @@
 
 import { useEffect } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
-import { redirect, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 import { useToast } from '@/app/hooks/useToast';
 import { State } from '@/app/lib/actions';
@@ -19,7 +20,6 @@ export default function Form({
   action: any;
   contact?: Contact;
 }) {
-  const router = useRouter();
   const initialState = { message: '', errors: {} };
   const [state, dispatch]: [state: State, dispatch: () => void] = useFormState(
     action,
@@ -78,9 +78,9 @@ export default function Form({
       </div>
       <div className={styles.actions}>
         <SubmitButton />
-        <Button type="button" onClick={() => router.push('/')}>
+        <Link href="/" className={styles.cancelButton}>
           Cancel
-        </Button>
+        </Link>
       </div>
     </form>
   );
@@ -91,7 +91,7 @@ function SubmitButton() {
 
   return (
     <Button type="submit" disabled={status.pending}>
-      Save
+      {status.pending ? <span className={styles.loader} /> : 'Save'}
     </Button>
   );
 }

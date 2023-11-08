@@ -8,9 +8,9 @@ export default function Header() {
       <Link href="/">
         <span>Contact List</span>
       </Link>
-      <Link href="/new">
-        <Button>Add Contact</Button>
-      </Link>
+      <Button asLink href="/new">
+        Add Contact
+      </Button>
     </header>
   );
 }

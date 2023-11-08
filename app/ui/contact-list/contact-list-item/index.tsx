@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { deleteContact } from '@/app/lib/actions';
 import { Contact } from '@/app/lib/definitions';
 import Button from '@/app/ui/components/button';
@@ -10,15 +9,17 @@ export default function ContactListItem({ contact }: { contact: Contact }) {
   return (
     <li>
       <div className={styles.listItem}>
-        <p className={styles.name}>{`${contact.first_name} ${contact.last_name}`}</p>
+        <p
+          className={styles.name}
+        >{`${contact.first_name} ${contact.last_name}`}</p>
         <p>Job: {contact.job}</p>
         <p>Description: {contact.description}</p>
         <div className={styles.actions}>
-          <Link href={`/${contact.id}/edit`}>
-            <Button>Edit</Button>
-          </Link>
+          <Button asLink href={`/${contact.id}/edit`}>
+            Edit
+          </Button>
           <form action={deleteContactWithId}>
-            <Button>Delete</Button>
+            <Button className={styles.deleteButton}>Delete</Button>
           </form>
         </div>
       </div>
