@@ -13,3 +13,8 @@
   justify-content: flex-end;
   gap: 1rem;
 }
+
+.errorMessage {
+  color: rgb(200 20 20);
+  font-size: 0.75rem;
+}

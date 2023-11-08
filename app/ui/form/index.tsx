@@ -1,7 +1,9 @@
 'use client';
 
+import { useFormState, useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 
+import { State } from '@/app/lib/actions';
 import { Contact } from '@/app/lib/definitions';
 import Button from '@/app/ui/components/button';
 import Input from '@/app/ui/components/input';
@@ -12,13 +14,18 @@ export default function Form({
   action,
   contact,
 }: {
-  action: string | ((formData: FormData) => void) | undefined;
+  action: any;
   contact?: Contact;
 }) {
   const router = useRouter();
+  const initialState = { message: null, errors: {} };
+  const [state, dispatch]: [state: State, dispatch: () => void] = useFormState(
+    action,
+    initialState
+  );
 
   return (
-    <form action={action} className={styles.form}>
+    <form action={dispatch} className={styles.form}>
       <div className={styles.inputWithLabel}>
         <Label htmlFor="first_name">First Name</Label>
         <Input
@@ -26,6 +33,9 @@ export default function Form({
           name="first_name"
           defaultValue={contact?.first_name}
         />
+        {state.errors?.first_name && (
+          <p className={styles.errorMessage}>{state.errors.first_name[0]}</p>
+        )}
       </div>
       <div className={styles.inputWithLabel}>
         <Label htmlFor="last_name">Last Name</Label>
@@ -34,10 +44,16 @@ export default function Form({
           name="last_name"
           defaultValue={contact?.last_name}
         />
+        {state.errors?.last_name && (
+          <p className={styles.errorMessage}>{state.errors.last_name[0]}</p>
+        )}
       </div>
       <div className={styles.inputWithLabel}>
         <Label htmlFor="job">Job</Label>
         <Input id="job" name="job" defaultValue={contact?.job} />
+        {state.errors?.job && (
+          <p className={styles.errorMessage}>{state.errors.job[0]}</p>
+        )}
       </div>
       <div className={styles.inputWithLabel}>
         <Label htmlFor="description">Description</Label>
@@ -46,13 +62,26 @@ export default function Form({
           name="description"
           defaultValue={contact?.description}
         />
+        {state.errors?.description && (
+          <p className={styles.errorMessage}>{state.errors.description[0]}</p>
+        )}
       </div>
       <div className={styles.actions}>
-        <Button type="submit">Save</Button>
+        <SubmitButton />
         <Button type="button" onClick={() => router.push('/')}>
           Cancel
         </Button>
       </div>
     </form>
+  );
+}
+
+function SubmitButton() {
+  const status = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={status.pending}>
+      Save
+    </Button>
   );
 }

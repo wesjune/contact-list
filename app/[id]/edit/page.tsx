@@ -20,3 +20,5 @@ export default async function EditContactPage({
     </main>
   );
 }
+
+export const dynamic = 'force-dynamic';

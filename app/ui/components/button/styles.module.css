@@ -12,3 +12,13 @@
   line-height: 1;
   cursor: pointer;
 }
+
+.button:hover {
+  background: #eee;
+}
+
+.button:disabled {
+  background: #ddd;
+  color: #666;
+  cursor: not-allowed;
+}

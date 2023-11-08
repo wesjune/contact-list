@@ -5,23 +5,42 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-const ContactSchema = z.object({
+const FormSchema = z.object({
   id: z.string(),
-  first_name: z.string(),
-  last_name: z.string(),
-  job: z.string(),
-  description: z.string(),
+  first_name: z.string().min(1, 'Please enter the first name.'),
+  last_name: z.string().min(1, 'Please enter the last name.'),
+  job: z.string().min(1, 'Please enter the job.'),
+  description: z.string().min(1, 'Please enter the description.'),
 });
 
-const AddContact = ContactSchema.omit({ id: true });
+export type State = {
+  errors?: {
+    first_name?: string[];
+    last_name?: string[];
+    job?: string[];
+    description?: string[];
+  };
+  message?: string | null;
+};
 
-export async function addContact(formData: FormData) {
-  const { first_name, last_name, job, description } = AddContact.parse({
+const AddContact = FormSchema.omit({ id: true });
+
+export async function addContact(prevState: State, formData: FormData) {
+  const validatedFields = AddContact.safeParse({
     first_name: formData.get('first_name'),
     last_name: formData.get('last_name'),
     job: formData.get('job'),
     description: formData.get('description'),
   });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing fields. Failed to add contact.',
+    };
+  }
+
+  const { first_name, last_name, job, description } = validatedFields.data;
 
   try {
     await sql`INSERT INTO contacts (first_name, last_name, job, description)
@@ -36,15 +55,28 @@ export async function addContact(formData: FormData) {
   redirect('/');
 }
 
-const UpdateContact = ContactSchema.omit({ id: true });
+const UpdateContact = FormSchema.omit({ id: true });
 
-export async function updateContact(id: string, formData: FormData) {
-  const { first_name, last_name, job, description } = UpdateContact.parse({
+export async function updateContact(
+  id: string,
+  prevState: State,
+  formData: FormData
+) {
+  const validatedFields = UpdateContact.safeParse({
     first_name: formData.get('first_name'),
     last_name: formData.get('last_name'),
     job: formData.get('job'),
     description: formData.get('description'),
   });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing fields. Failed to update contact.',
+    };
+  }
+
+  const { first_name, last_name, job, description } = validatedFields.data;
 
   try {
     await sql`
