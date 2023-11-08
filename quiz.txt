@@ -1,0 +1,9 @@
+Code 2 is a better way to code the component.
+
+In Code 1, the `onClick` event listener is attached to the outermost `div` element that wraps all the animal names. This means that when you click anywhere within that `div`, the click event will be triggered, and you'll need to inspect the `e.target` property to determine which animal was clicked. This can be less efficient and may require additional code to identify the specific animal that was clicked.
+
+In Code 2, the `onClick` event listener is attached to each individual animal name `div`. This makes it more straightforward and efficient to determine which animal was clicked because the event handler is directly associated with each animal element. You can directly access the text of the clicked animal using `e.target.innerHTML`, as shown in the `handleClick` function. This approach is more intuitive and better follows the principle of encapsulating behavior and event handling within the individual components or elements that need them.
+
+Therefore, Code 2 is a better way to code the component as it results in cleaner and more maintainable code, making it easier to handle user interactions for each animal item in the list.
+
+Please note that both code examples are missing the `key` attribute when rendering a list of items.
