@@ -19,8 +19,12 @@ li {
 }
 
 h1 {
-  font-size: 1.75rem;
+  font-size: 2rem;
   line-height: 1;
+}
+
+h2 {
+  font-size: 1.75rem;
 }
 
 p {

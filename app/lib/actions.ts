@@ -23,8 +23,14 @@ export async function addContact(formData: FormData) {
     description: formData.get('description'),
   });
 
-  await sql`INSERT INTO contacts (first_name, last_name, job, description)
-  VALUES (${first_name}, ${last_name}, ${job}, ${description})`;
+  try {
+    await sql`INSERT INTO contacts (first_name, last_name, job, description)
+    VALUES (${first_name}, ${last_name}, ${job}, ${description})`;
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to create contact.',
+    };
+  }
 
   revalidatePath('/');
   redirect('/');
@@ -40,7 +46,8 @@ export async function updateContact(id: string, formData: FormData) {
     description: formData.get('description'),
   });
 
-  await sql`
+  try {
+    await sql`
     UPDATE contacts
     SET first_name = ${first_name}, 
         last_name = ${last_name}, 
@@ -48,13 +55,24 @@ export async function updateContact(id: string, formData: FormData) {
         description = ${description}
     WHERE id = ${id}
   `;
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to update contact.',
+    };
+  }
 
   revalidatePath('/');
   redirect('/');
 }
 
 export async function deleteContact(id: string) {
-  await sql`DELETE FROM contacts WHERE id = ${id}`;
-
-  revalidatePath('/');
+  try {
+    await sql`DELETE FROM contacts WHERE id = ${id}`;
+    revalidatePath('/');
+    return { message: 'Deleted contact.' };
+  } catch (error) {
+    return {
+      message: 'Database Error: Failed to delete contact.',
+    };
+  }
 }
